@@ -92,5 +92,25 @@ namespace AuthApi.Controllers
 
             return StatusCode(400, new { message = "Hiba" });
         }
+
+        [HttpDelete("deleteUser")]
+        public async Task<IActionResult> DeleteUser([FromQuery] Guid id)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if (user is null)
+            {
+                return StatusCode(404, new { message = "Nincs találat" });
+            }
+            else if (user is not null)
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+
+                return StatusCode(200, new { message = "Törölve", result = user });
+            }
+
+            return StatusCode(400, new { message = "Hiba" });
+        }
     }
 }
