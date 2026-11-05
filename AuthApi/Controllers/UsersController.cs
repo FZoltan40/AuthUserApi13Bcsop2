@@ -68,5 +68,29 @@ namespace AuthApi.Controllers
 
             return StatusCode(400, new { message = "Hiba" });
         }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateUser([FromQuery] Guid id , [FromBody]UpdateUserDto updateUserDto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user is null)
+            {
+                return StatusCode(404, new { message = "Nincs találat" });
+            }
+            else if (user is not null)
+            {
+                user.Name = updateUserDto.Name;
+                user.Email = updateUserDto.Email;
+                user.Password = updateUserDto.Password;
+
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+
+                return StatusCode(200, new { message = "Frissítve", result = user });
+            }
+
+            return StatusCode(400, new { message = "Hiba" });
+        }
     }
 }
