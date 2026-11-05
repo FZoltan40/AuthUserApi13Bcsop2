@@ -11,6 +11,22 @@
   },
   {
     "ContainingType": "AuthApi.Controllers.UsersController",
+    "Method": "UserById",
+    "RelativePath": "users/byId",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.UsersController",
     "Method": "NewUser",
     "RelativePath": "users/newUser",
     "HttpMethod": "POST",

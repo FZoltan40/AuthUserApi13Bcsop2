@@ -51,5 +51,22 @@ namespace AuthApi.Controllers
 
             return StatusCode(200, new { message = "Lekérdezve", result = users });
         }
+
+        [HttpGet("byId")]
+        public async Task<IActionResult> UserById([FromQuery]Guid id)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == id);
+
+            if (user is null)
+            {
+                return StatusCode(404, new { message = "Nincs találat" });
+            }
+            else if (user is not null)
+            {
+                return StatusCode(200, new { message = "Lekérdezve" , result = user});
+            }
+
+            return StatusCode(400, new { message = "Hiba" });
+        }
     }
 }
