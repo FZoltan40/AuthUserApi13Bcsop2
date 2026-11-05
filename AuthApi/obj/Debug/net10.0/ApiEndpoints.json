@@ -1,6 +1,16 @@
 [
   {
     "ContainingType": "AuthApi.Controllers.UsersController",
+    "Method": "AllUser",
+    "RelativePath": "users/allUser",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.UsersController",
     "Method": "NewUser",
     "RelativePath": "users/newUser",
     "HttpMethod": "POST",

@@ -2,6 +2,7 @@
 using AuthApi.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthApi.Controllers
 {
@@ -36,6 +37,19 @@ namespace AuthApi.Controllers
             await _context.SaveChangesAsync();
 
             return StatusCode(201, new { message = "Felvéve" , result = user});
+        }
+
+        [HttpGet("allUser")]
+        public async Task<IActionResult> AllUser()
+        {
+            var users = await _context.Users.ToListAsync();
+
+            if (users is null)
+            {
+                return StatusCode(400, new { message = "Hiba" });
+            }
+
+            return StatusCode(200, new { message = "Lekérdezve", result = users });
         }
     }
 }
