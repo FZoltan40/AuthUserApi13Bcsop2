@@ -2,6 +2,7 @@
 using AuthApi.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace AuthApi.Controllers
@@ -10,11 +11,11 @@ namespace AuthApi.Controllers
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly AuthuserContext _contex;
+        private readonly AuthuserContext _context;
 
-        public RolesController(AuthuserContext contex)
+        public RolesController(AuthuserContext context)
         {
-            _contex = contex;
+            _context = context;
         }
 
         [HttpPost("newRole")]
@@ -34,8 +35,8 @@ namespace AuthApi.Controllers
                     return StatusCode(404, new { message = "Nincs szerepkör megadva." });
                 }
 
-                await _contex.Roles.AddAsync(role);
-                await _contex.SaveChangesAsync();
+                await _context.Roles.AddAsync(role);
+                await _context.SaveChangesAsync();
 
                 return StatusCode(201, new { message = "Felvéve", result = role });
             }
@@ -43,7 +44,26 @@ namespace AuthApi.Controllers
             {
                 return StatusCode(400, new { message = exception.Message});
             }
-           
+        }
+
+        [HttpGet("allRole")]
+        public async Task<IActionResult> AllRole()
+        {
+            try
+            {
+                var roles = await _context.Roles.ToListAsync();
+
+                if (roles is null)
+                {
+                    return StatusCode(404, new { message = "Nincs találat" });
+                }
+
+                return StatusCode(200, new { message = "Lekérdezve", result = roles });
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(400, new { message = exception.Message });
+            }
         }
     }
 }

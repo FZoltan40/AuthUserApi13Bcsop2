@@ -1,6 +1,16 @@
 [
   {
     "ContainingType": "AuthApi.Controllers.RolesController",
+    "Method": "AllRole",
+    "RelativePath": "roles/allRole",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthApi.Controllers.RolesController",
     "Method": "NewRole",
     "RelativePath": "roles/newRole",
     "HttpMethod": "POST",
