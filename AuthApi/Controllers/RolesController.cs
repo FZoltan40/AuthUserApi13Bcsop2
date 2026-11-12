@@ -86,9 +86,33 @@ namespace AuthApi.Controllers
             {
                 return StatusCode(400, new { message = exception.Message });
             }
-          
+        }
 
-          
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateRole([FromQuery] Guid id, [FromBody] UpdateRoleDto updateRoleDto)
+        {
+            try
+            {
+                var role = await _context.Roles.FirstOrDefaultAsync(r => r.Id == id);
+
+                if (role is null)
+                {
+                    return StatusCode(404, new { message = "Nincs találat" });
+                }
+                else
+                {
+                    role.Name = updateRoleDto.Name;
+
+                    _context.Roles.Update(role);
+                    await _context.SaveChangesAsync();
+
+                    return StatusCode(200, new { message = "Frissítve", result = role });
+                }
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(400, new { message = exception.Message });
+            }
         }
     }
 }
