@@ -114,5 +114,30 @@ namespace AuthApi.Controllers
                 return StatusCode(400, new { message = exception.Message });
             }
         }
+
+        [HttpDelete("deleteRole")]
+        public async Task<IActionResult> DeleteRole([FromQuery] Guid id)
+        {
+            try
+            {
+                var role = await _context.Roles.FindAsync(id);
+
+                if (role is null)
+                {
+                    return StatusCode(404, new { message = "Nincs találat" });
+                }
+                else
+                {
+                    _context.Roles.Remove(role);
+                    await _context.SaveChangesAsync();
+
+                    return StatusCode(200, new { message = "Törölve", result = role });
+                }
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(400, new { message = exception.Message });
+            }
+        }
     }
 }
