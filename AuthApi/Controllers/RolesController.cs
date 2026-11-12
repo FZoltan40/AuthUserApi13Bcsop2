@@ -65,5 +65,30 @@ namespace AuthApi.Controllers
                 return StatusCode(400, new { message = exception.Message });
             }
         }
+
+        [HttpGet("byId")]
+        public async Task<IActionResult> RoleById([FromQuery] Guid id)
+        {
+            try
+            {
+                var role = await _context.Roles.SingleOrDefaultAsync(r => r.Id == id);
+
+                if (role is null)
+                {
+                    return StatusCode(404, new { message = "Nincs találat" });
+                }
+                else 
+                {
+                    return StatusCode(200, new { message = "Lekérdezve", result = role });
+                }
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(400, new { message = exception.Message });
+            }
+          
+
+          
+        }
     }
 }
