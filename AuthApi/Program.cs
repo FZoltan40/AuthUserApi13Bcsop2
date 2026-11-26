@@ -1,5 +1,6 @@
 
 using AuthApi.Models;
+using AuthApi.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using System.Text.Json.Serialization;
@@ -16,7 +17,7 @@ namespace AuthApi
                 options.UseMySQL(builder.Configuration.GetConnectionString("Mysql"))
             );
 
-           
+            builder.Services.AddScoped<PasswordHasher>();  //DI listába felvétel
 
             // Add services to the container.
 
