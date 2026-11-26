@@ -1,8 +1,11 @@
 
 using AuthApi.Models;
 using AuthApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace AuthApi
@@ -18,6 +21,38 @@ namespace AuthApi
             );
 
             builder.Services.AddScoped<PasswordHasher>();  //DI listába felvétel
+
+            builder.Services.AddScoped<GenerateToken>();  //DI listába felvétel
+
+            var secret = "ide-johet-az-egyedi-azonosito-amivel-a-token-felhasznalas-szabalyozhato-legalabb-32-karakter-legyen";
+
+            var issuer = "auth-api";
+
+            var audience = "client-api";
+
+            var key = Encoding.ASCII.GetBytes(secret);
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(jwt =>
+            {
+                jwt.TokenValidationParameters = new TokenValidationParameters 
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidIssuer = issuer,
+                    ValidAudience = audience,
+                    ValidateAudience = true
+                };
+            });
+
+
+
+
+
 
             // Add services to the container.
 
@@ -36,6 +71,7 @@ namespace AuthApi
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
