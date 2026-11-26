@@ -24,11 +24,11 @@ namespace AuthApi
 
             builder.Services.AddScoped<GenerateToken>();  //DI listába felvétel
 
-            var secret = "ide-johet-az-egyedi-azonosito-amivel-a-token-felhasznalas-szabalyozhato-legalabb-32-karakter-legyen";
+            var secret = builder.Configuration.GetSection("Token:secret").Value;
 
-            var issuer = "auth-api";
+            var issuer = builder.Configuration.GetSection("Token:issuer").Value;
 
-            var audience = "client-api";
+            var audience = builder.Configuration.GetSection("Token:audience").Value;
 
             var key = Encoding.ASCII.GetBytes(secret);
 

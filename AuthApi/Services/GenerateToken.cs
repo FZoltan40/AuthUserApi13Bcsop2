@@ -9,10 +9,17 @@ namespace AuthApi.Services
 {
     public class GenerateToken
     {
+        private readonly IConfiguration _configuration;
+
+        public GenerateToken(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public string Token(Guid id, string email, ICollection<Role> roles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("ide-johet-az-egyedi-azonosito-amivel-a-token-felhasznalas-szabalyozhato-legalabb-32-karakter-legyen");
+            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("Token:secret").Value!);
 
             var claimList = new List<Claim>
             {
@@ -27,8 +34,8 @@ namespace AuthApi.Services
 
             var tokenDescription = new SecurityTokenDescriptor
             {
-                Audience = "client-api",
-                Issuer = "auth-api",
+                Audience = _configuration.GetSection("Token:audience").Value!,
+                Issuer = _configuration.GetSection("Token:issuer").Value!,
                 Subject = new ClaimsIdentity(claimList),
                 Expires = DateTime.Now.AddDays(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),SecurityAlgorithms.HmacSha256Signature)
