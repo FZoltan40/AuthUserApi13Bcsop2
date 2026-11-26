@@ -17,7 +17,7 @@ namespace AuthApi
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddDbContext<AuthuserContext>(options =>
-                options.UseMySQL(builder.Configuration.GetConnectionString("Mysql"))
+                options.UseMySQL(builder.Configuration.GetConnectionString("Mysql")!)
             );
 
             builder.Services.AddScoped<PasswordHasher>();  //DI listába felvétel
@@ -48,11 +48,6 @@ namespace AuthApi
                     ValidateAudience = true
                 };
             });
-
-
-
-
-
 
             // Add services to the container.
 

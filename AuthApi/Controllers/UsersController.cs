@@ -49,7 +49,7 @@ namespace AuthApi.Controllers
             return StatusCode(201, new { message = "Felvéve" , result = user});
         }
 
-        [Authorize(Roles = "student,teacher")]
+        [Authorize(Roles = "student")]
         [HttpGet("allUser")]
         public async Task<IActionResult> AllUser()
         {
