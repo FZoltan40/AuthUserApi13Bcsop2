@@ -118,5 +118,33 @@ namespace AuthApi.Controllers
 
             return StatusCode(400, new { message = "Hiba" });
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginUserDto loginUserDto)
+        {
+            try
+            {
+                var user = await _context.Users.Include(u => u.Roles)
+                    .SingleOrDefaultAsync(u => u.Email == loginUserDto.Email);
+
+                if (user is null)
+                {
+                    return StatusCode(404, new {message = "Nincs ilyen email"});
+                }
+
+                var isValid = _passwordHasher.Verify(loginUserDto.Password!,user.Password!,user.Salt!);
+
+                if (isValid)
+                {
+                    return StatusCode(200, new { message = "Sikeres belépés"});
+                }
+
+                return StatusCode(404, new { message = "Hibás jelszó" });
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(400, new { message = exception.Message });
+            }
+        }
     }
 }
