@@ -9,7 +9,9 @@ namespace AuthApi.Services
         public string Token(Guid id, string email, ICollection<Role> roles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("ide-johet-az-egyedi-azonosito-amivel-a-token-felhasznalas-szabalyozhato");
+            var key = Encoding.ASCII.GetBytes("ide-johet-az-egyedi-azonosito-amivel-a-token-felhasznalas-szabalyozhato-legalabb-32-karakter-legyen");
+
+
         }
     }
 }
